@@ -17,5 +17,56 @@ app.get('/account/authenticated', function (req, res){
 		res.send(401);
 	}
 });
+
+app.post('/register', function (req, res) {
+	var firstName = req.param('firstName', '');
+	var lastName = req.param('lastName', '');
+	var email = req.param('email', null);
+	var password = req.param('password', null);
 	
+	if(null == email || null == password){
+	res.send(400);
+	return;
+	}
+	
+	Account.register(email, password, firdtName, lastName);
+	res.send(200);
+});
+	
+app.post('/login', function (req, res){
+	console.log('login request');
+	var email = req.param('email', null);
+	var password = req.param('password', null);
+	if (null == email || emai.length < 1 
+			|| null == password || pasword.length < 1){
+		res.send(400);
+		return;
+		}
+		
+	Account.login(email, password, function(success){
+		if(!success) {
+			res.send(400);
+			return;
+			}
+		console.log('login was successful');
+	});
+});	
+	
+app.post('/forgotpassword', function(req, res){
+	var hostname = req.headers.host;
+	var resetPasswordUrl= 'http://' + hostname+'/resetPassword';
+	var email = rea.param('email', null);
+	if ( null == email || email.length < 1){
+		res.send(400);
+		return;
+	}
+	
+	Account.forgotPassword(email, resetPasswordUrl, function (success) {
+		if (success){
+			res.send(200);
+		} else{
+		res.send(404);
+	}
+});
+});
 app.listen(8784);
