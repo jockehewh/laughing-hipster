@@ -36,7 +36,7 @@ module.exports = function(config, mongoose, nodemailer){
 				});
 	};
 	
-	var forgotPassword= functioon(email, resetPasswordUrl, callback){
+	var forgotPassword= function(email, resetPasswordUrl, callback){
 		var user= Account.findOne({email:email}, function findAccount(err, doc) {
 			if(err){
 				callback(false);
@@ -93,4 +93,18 @@ module.exports = function(config, mongoose, nodemailer){
 		login: login,
 		Account: Account
 	}
+	
+define(['model/StatusCollection'], function (StatusCollection) {
+	var Account= Backbone.Model.extend({
+		urlRoot: '/accounts',
+		
+		initialize: function () {
+			this.status = new StatusCollection();
+			this.status.url = '/accounts/'+ this.id + '/status';
+			this.activity = new StatusCollection();
+			this.activity.url = '/accounts/'+ this.id + '/activity';
+			}
+	});
+	return Account;
+	});
 }
